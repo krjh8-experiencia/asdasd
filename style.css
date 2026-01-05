@@ -27,7 +27,7 @@ h1 {
   gap: 10px;
 }
 
-/* Lista de strings a la izquierda */
+/* Panel de lista de strings */
 #stringList {
   flex: 0 0 350px;
   background: #2e2e2e;
@@ -46,7 +46,7 @@ h1 {
   background: #444;
 }
 
-/* Editor de string a la derecha */
+/* Editor a la derecha */
 #editor {
   flex: 1;
   background: #1e1e1e;
