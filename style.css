@@ -1,0 +1,64 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+  background: #1e1e1e;
+  color: #eee;
+}
+
+h1 {
+  text-align: center;
+  color: #ffcc00;
+  margin: 10px 0;
+}
+
+#topbar {
+  display: flex;
+  gap: 10px;
+  padding: 0 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100% - 60px);
+  gap: 10px;
+}
+
+/* Lista de strings a la izquierda */
+#stringList {
+  flex: 0 0 300px;
+  background: #2e2e2e;
+  padding: 10px;
+  overflow-y: auto;
+  border-right: 2px solid #555;
+  height: 100%;
+}
+
+/* Cada string clickeable */
+.stringItem {
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.stringItem:hover {
+  background: #444;
+}
+
+/* Editor de string a la derecha */
+#editor {
+  flex: 1;
+  background: #1e1e1e;
+  color: #fff;
+  border: 1px solid #555;
+  resize: none;
+  padding: 15px;
+  overflow-y: auto;
+  font-size: 16px;
+  line-height: 1.4;
+  height: 100%;
+  box-sizing: border-box;
+}
