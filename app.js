@@ -1,19 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
   const fileInput = document.getElementById("fileInput");
   const filenameSpan = document.getElementById("filename");
-  const searchInput = document.getElementById("searchInput");
   const stringList = document.getElementById("stringList");
   const editor = document.getElementById("editor");
   const downloadBtn = document.getElementById("downloadBtn");
 
-  let fileContent = "";
-  let stringsArray = [];
-  let currentIndex = -1;
+  let zip = null;
+  let javaFiles = [];
   let currentFileName = "";
+  let currentStrings = [];
+  let currentIndex = -1;
 
-  // Función para extraer strings de Java
   function extractStrings(content) {
-    // Regex para cadenas de texto en Java (entre "")
     const regex = /"(.*?)"/g;
     const matches = [];
     let match;
@@ -23,13 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return matches;
   }
 
-  function renderStringList(filter="") {
+  function renderStringList() {
     stringList.innerHTML = "";
-    const filtered = filter
-      ? stringsArray.filter(s => s.includes(filter))
-      : stringsArray;
-
-    filtered.forEach((s,i) => {
+    currentStrings.forEach((s,i) => {
       const div = document.createElement("div");
       div.className = "stringItem";
       div.textContent = s;
@@ -44,38 +38,51 @@ document.addEventListener("DOMContentLoaded", () => {
   fileInput.addEventListener("change", async () => {
     const file = fileInput.files[0];
     if (!file) return;
+
     currentFileName = file.name;
     filenameSpan.textContent = file.name;
 
-    const text = await file.text();
-    fileContent = text;
-    stringsArray = extractStrings(fileContent);
-    renderStringList();
-    editor.value = "";
-  });
+    zip = await JSZip.loadAsync(file);
 
-  searchInput.addEventListener("input", () => {
-    renderStringList(searchInput.value);
+    // Buscar todos los archivos .java
+    javaFiles = [];
+    zip.forEach((relativePath, fileObj) => {
+      if (relativePath.endsWith(".java")) {
+        javaFiles.push(relativePath);
+      }
+    });
+
+    if (javaFiles.length === 0) {
+      alert("No se encontraron archivos .java en el JAR");
+      return;
+    }
+
+    // Abrir el primer .java automáticamente
+    const firstJava = javaFiles[0];
+    const text = await zip.file(firstJava).async("string");
+    currentStrings = extractStrings(text);
+    renderStringList();
   });
 
   editor.addEventListener("input", () => {
     if (currentIndex < 0) return;
-    stringsArray[currentIndex] = editor.value;
+    currentStrings[currentIndex] = editor.value;
   });
 
-  downloadBtn.addEventListener("click", () => {
-    if (!fileContent) return alert("No hay archivo cargado");
+  downloadBtn.addEventListener("click", async () => {
+    if (!zip) return alert("No hay archivo cargado");
 
-    // Reemplazar strings en el contenido original
-    let modifiedContent = fileContent;
-    const regex = /"(.*?)"/g;
-    let i = 0;
-    modifiedContent = modifiedContent.replace(regex, () => `"${stringsArray[i++]}"`);
+    for (let javaFile of javaFiles) {
+      let content = await zip.file(javaFile).async("string");
+      let i = 0;
+      content = content.replace(/"(.*?)"/g, () => `"${currentStrings[i++] || ''}"`);
+      zip.file(javaFile, content);
+    }
 
-    const blob = new Blob([modifiedContent], {type:"text/plain"});
+    const blob = await zip.generateAsync({type:"blob"});
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = currentFileName || "modificado.java";
+    a.download = currentFileName.replace(".jar","-mod.jar");
     a.click();
   });
 });
