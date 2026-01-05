@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Jar Editor</title>
+<title>Java String Editor</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<h1>Java String Editor</h1>
 
-<input type="file" id="jar">
-<button onclick="upload()">Subir JAR</button>
+<div id="topbar">
+  <input type="file" id="fileInput" accept=".java,.txt">
+  <span id="filename"></span>
+  <input type="text" id="searchInput" placeholder="Buscar string">
+  <button id="downloadBtn">Descargar Modificado</button>
+</div>
 
 <div id="container">
-  <div id="tree"></div>
-  <textarea id="editor"></textarea>
+  <div id="stringList"></div>
+  <textarea id="editor" placeholder="Selecciona un string para editar"></textarea>
 </div>
 
 <script src="app.js"></script>
