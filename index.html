@@ -2,17 +2,16 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Java String Editor</title>
+<title>Jar String Editor</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Java String Editor</h1>
+<h1>Jar String Editor</h1>
 
 <div id="topbar">
-  <input type="file" id="fileInput" accept=".java,.txt">
+  <input type="file" id="fileInput" accept=".jar">
   <span id="filename"></span>
-  <input type="text" id="searchInput" placeholder="Buscar string">
-  <button id="downloadBtn">Descargar Modificado</button>
+  <button id="downloadBtn">Descargar JAR Modificado</button>
 </div>
 
 <div id="container">
@@ -20,6 +19,7 @@
   <textarea id="editor" placeholder="Selecciona un string para editar"></textarea>
 </div>
 
-<script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="string-editor.js"></script>
 </body>
 </html>
