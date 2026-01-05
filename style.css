@@ -16,26 +16,24 @@ h1 {
 #topbar {
   display: flex;
   gap: 10px;
-  padding: 0 10px;
   align-items: center;
+  padding: 0 10px;
   margin-bottom: 10px;
 }
 
 #container {
   display: flex;
-  flex-direction: row;
   height: calc(100% - 60px);
   gap: 10px;
 }
 
 /* Lista de strings a la izquierda */
 #stringList {
-  flex: 0 0 300px;
+  flex: 0 0 350px;
   background: #2e2e2e;
   padding: 10px;
   overflow-y: auto;
   border-right: 2px solid #555;
-  height: 100%;
 }
 
 /* Cada string clickeable */
